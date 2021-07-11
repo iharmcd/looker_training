@@ -106,7 +106,7 @@ view: events {
   }
 
   dimension:  city_state {
-    label: "city and state"
+    label: "City and State"
     description: "combines city and state connected by _"
     type :  string
     sql: ${city} || '_' || ${state} ;;

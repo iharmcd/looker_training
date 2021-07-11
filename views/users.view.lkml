@@ -84,6 +84,16 @@ view: users {
     sql: ${TABLE}."ZIP" ;;
   }
 
+  dimension: age_tier {
+    label: "User Age Bins"
+    description: "Groups individual ages into age groups."
+    type:  tier
+    tiers: [18, 25, 35, 45, 55, 65, 75, 90]
+    style: integer
+    sql: ${age} ;;
+
+  }
+
   measure: count {
     type: count
     drill_fields: [id, last_name, first_name, events.count, order_items.count]

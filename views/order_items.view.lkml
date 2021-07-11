@@ -110,9 +110,40 @@ view: order_items {
   }
 
   dimension: shipping_days  {
-    label: "shipping days"
+    label: "Shipping Days"
     description: "number of days between the order ship date and the order delivered date"
     type: number
-    sql: DATEDIFF(day, ${delivered_date}, ${shipped_date}) ;;
+    sql: DATEDIFF(day, ${shipped_date}, ${delivered_date}) ;;
+  }
+
+  dimension: is_returned {
+    label: "Is Order Returned "
+    description: "Calculates whether the order was returned or not."
+    type:  yesno
+    sql: ${returned_date} is not null ;;
+  }
+
+  measure: total_sale_price  {
+    label: "Total Sale Price"
+    description: "Total sales from items sold"
+    type:  sum
+    sql: ${sale_price} ;;
+    value_format_name: usd
+  }
+
+  measure: average_sale_price  {
+    label: "Average Sale Price"
+    description: "Average sale price of items sold"
+    type:  average
+    sql: ${sale_price} ;;
+    value_format_name: usd
+  }
+
+  measure: cumulative_total_sales {
+    label: "Cumulative Total Sales"
+    description: "Cumulative total sales from items sold (running total)"
+    type:  running_total
+    sql: ${sale_price} ;;
+    value_format_name: usd
   }
 }
