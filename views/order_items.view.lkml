@@ -5,6 +5,7 @@ view: order_items {
 
   dimension: id {
     primary_key: yes
+    hidden: yes
     type: number
     sql: ${TABLE}."ID" ;;
   }
@@ -63,6 +64,7 @@ view: order_items {
   }
 
   dimension: sale_price {
+    hidden: yes
     type: number
     sql: ${TABLE}."SALE_PRICE" ;;
   }
@@ -109,11 +111,13 @@ view: order_items {
     ]
   }
 
-  dimension: shipping_days  {
+  dimension_group: shipping_duration  {
     label: "Shipping Days"
     description: "number of days between the order ship date and the order delivered date"
-    type: number
-    sql: DATEDIFF(day, ${shipped_date}, ${delivered_date}) ;;
+    type: duration
+    intervals: [day]
+    sql_start: ${created_raw} ;;
+    sql_end: ${delivered_raw} ;;
   }
 
   dimension: is_returned {
