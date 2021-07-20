@@ -37,6 +37,8 @@ persist_with: looker_intensive2_ihar_makayed_default_datagroup
 # }
 
 explore: order_items {
+  label: "Order Items"
+  description: "Detailed order information"
   join: inventory_items {
     type: left_outer
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
@@ -72,6 +74,7 @@ explore: order_items {
 
 explore: users {
   label: "Customers"
+  description: "Users behavior and attributes."
 
   join: events {
     type: left_outer
