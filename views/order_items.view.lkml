@@ -124,7 +124,16 @@ view: order_items {
     label: "Is Order Returned "
     description: "Calculates whether the order was returned or not."
     type:  yesno
-    sql: ${status} in ('Returned', 'Cancelled') ;;
+    sql: ${status} = 'Returned' ;;
+    #sql: ${returned_date} is not null ;;
+  }
+
+  dimension: is_order_status_positive {
+    label: "Is Order Returned "
+    description: "Calculates whether the order was returned or not."
+    hidden: yes
+    type:  yesno
+    sql: ${status} not in ('Returned', 'Cancelled') ;;
     #sql: ${returned_date} is not null ;;
   }
 
@@ -164,7 +173,7 @@ view: order_items {
     label: "Total Gross Revenue"
     description: "Total revenue from completed sales (cancelled and returned orders excluded)"
     type:  sum
-    filters: [is_returned: "no"]
+    filters: [is_order_status_positive: "yes"]
     #filters: [status: "-Cancelled, -Returned"]
     sql:  ${sale_price} ;;
     value_format_name: usd
@@ -192,7 +201,7 @@ view: order_items {
     label: "Total Gross Margin Amount"
     description: "Total difference between the total revenue from completed sales and the cost of the goods that were sold"
     type: sum
-    filters: [status: "-Cancelled, -Returned"]
+    filters: [is_order_status_positive: "yes"]
     sql: ${sale_price} - ${inventory_items.cost}  ;;
     value_format_name: usd
 
@@ -202,7 +211,7 @@ view: order_items {
     label: "Average Gross Margin"
     description: "Average difference between the total revenue from completed sales and the cost of the goods that were sold"
     type: average
-    filters: [status: "-Cancelled, -Returned"]
+    filters: [is_order_status_positive: "yes"]
     sql: ${sale_price} - ${inventory_items.cost}  ;;
     value_format_name: usd
 
@@ -221,7 +230,7 @@ view: order_items {
     label: "Number of Items Returned"
     description: "Number of items that were returned by dissatisfied customers"
     type: count
-    filters: [status: "Returned"]
+    filters: [is_returned: "yes"]
     # sql: ${order_id};;
   }
 
@@ -237,7 +246,7 @@ view: order_items {
     label: "Number of Customers Returning Items"
     description: "Number of users who have returned an item at some point"
     type: count_distinct
-    filters: [status: "Returned"]
+    filters: [is_returned: "yes"]
     sql: ${user_id} ;;
   }
 
