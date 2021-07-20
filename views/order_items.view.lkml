@@ -124,7 +124,8 @@ view: order_items {
     label: "Is Order Returned "
     description: "Calculates whether the order was returned or not."
     type:  yesno
-    sql: ${returned_date} is not null ;;
+    sql: ${status} in ('Returned', 'Cancelled') ;;
+    #sql: ${returned_date} is not null ;;
   }
 
   measure: total_sale_price  {
@@ -163,7 +164,8 @@ view: order_items {
     label: "Total Gross Revenue"
     description: "Total revenue from completed sales (cancelled and returned orders excluded)"
     type:  sum
-    filters: [status: "-Cancelled, -Returned"]
+    filters: [is_returned: "no"]
+    #filters: [status: "-Cancelled, -Returned"]
     sql:  ${sale_price} ;;
     value_format_name: usd
   }
@@ -210,7 +212,7 @@ view: order_items {
     label: "Gross Margin %"
     description: "Total Gross Margin Amount / Total Gross Revenue"
     type: number
-    sql: 1.0 * ${total_gross_margin} / ${total_gross_revenue} * 100  ;;
+    sql: 1.0 * ${total_gross_margin} / NULLIF(${total_gross_revenue},0) * 100  ;;
     value_format: "0.00\%" # can be changed to percent_2, but remove * 100
 
   }
@@ -227,7 +229,7 @@ view: order_items {
     label: "Item Return Rate"
     description: "Number of Items Returned / total number of items sold"
     type: number
-    sql: ${items_returned_amount} / ${count};;
+    sql: ${items_returned_amount} / NULLIF(${count},0);;
     value_format: "0.####"
   }
 
@@ -243,7 +245,7 @@ view: order_items {
     label: "% of Users with Returns"
     description: "Number of Customer Returning Items / total number of customers"
     type: number
-    sql: ${users_returning_items} / ${users.count} ;;
+    sql: ${users_returning_items} / NULLIF(${users.count},0) ;;
     value_format_name: percent_2
   }
 
@@ -251,7 +253,7 @@ view: order_items {
     label: "Average Spend per Customer"
     description: "Total Sale Price / total number of customers"
     type: number
-    sql: ${total_sale_price} / ${users.count} ;;
+    sql: ${total_sale_price} / NULLIF(${users.count},0) ;;
     value_format_name: usd
   }
 
