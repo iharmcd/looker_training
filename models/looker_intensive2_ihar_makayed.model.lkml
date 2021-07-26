@@ -82,22 +82,22 @@ explore: users {
     relationship: one_to_many
   }
 
-  join: order_items {
-    type: left_outer
-    sql: ${users.id} = ${order_items.user_id} ;;
-    relationship: one_to_many
-  }
+  # join: order_items {
+  #   type: left_outer
+  #   sql: ${users.id} = ${order_items.user_id} ;;
+  #   relationship: one_to_many
+  # }
 
-  join: inventory_items {
-    type: left_outer
-    sql: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
-    relationship: many_to_one
-  }
+  # join: inventory_items {
+  #   type: left_outer
+  #   sql: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
+  #   relationship: many_to_one
+  # }
 
-  join: products {
-    type: left_outer
-    sql: ${inventory_items.product_id} = ${products.id} ;;
-    relationship: many_to_one
-  }
+  # join: products {
+  #   type: left_outer
+  #   sql: ${inventory_items.product_id} = ${products.id} ;;
+  #   relationship: many_to_one
+  # }
 
 }
