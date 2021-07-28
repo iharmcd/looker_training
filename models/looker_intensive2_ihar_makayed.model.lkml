@@ -2,7 +2,7 @@ connection: "snowlooker"
 
 # include all the views
 include: "/views/**/*.view"
-
+include: "/task_4_dashboard.dashboard"
 datagroup: looker_intensive2_ihar_makayed_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
   max_cache_age: "1 hour"
