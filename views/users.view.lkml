@@ -142,7 +142,7 @@ view: users {
     description: "If user was registered within last 90 days. then new"
     type:  string
     sql:
-    case when datediff(day, ${created_date}, getdate()) < 90
+    case when datediff(day, ${created_date}, getdate()) <= 90
     then 'New Customer'
     else 'Long-Term Customer'
     end;;
